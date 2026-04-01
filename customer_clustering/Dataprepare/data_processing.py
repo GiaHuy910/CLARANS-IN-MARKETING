@@ -68,6 +68,6 @@ D = scaler.fit_transform(scaling_data)
 
 #PCA
 pca = PCA(n_components=2)
-D_sample=D[:1000]
-X_pca = pca.fit_transform(D_sample)
+D_sample=D
+data_pca = pca.fit_transform(D_sample)
 D = pd.DataFrame(D, columns=features_scaling)

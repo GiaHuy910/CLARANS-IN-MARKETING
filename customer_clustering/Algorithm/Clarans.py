@@ -10,6 +10,7 @@ class CLARANS:
         self.medoids_: list[int] = []
         self.clusters_: list[list[int]] = []
         self.cost_: float = float("inf")
+        self.sihouette_score_: float = -1.0
     def _euclid_dist(self,a,b):
         return  np.linalg.norm(a - b)
     def _compute_total_cost(self,medoids):
@@ -57,4 +58,11 @@ class CLARANS:
         return self.clusters
     def get_medoids(self):
         return self.medoids
+    def get_labels(self):
+        clusters = self.get_clusters()
+        labels = [0] * len(self.data)
+        for cluster_id, cluster in enumerate(clusters):
+            for index in cluster:
+                labels[index] = cluster_id
+        return labels
 
