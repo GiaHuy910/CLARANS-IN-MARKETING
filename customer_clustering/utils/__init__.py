@@ -1,1 +1,2 @@
 from .Clarans_fast_build import clarans_fast_build
+from .Kmeans_fast_build import Kmeans_silhouette_analysis

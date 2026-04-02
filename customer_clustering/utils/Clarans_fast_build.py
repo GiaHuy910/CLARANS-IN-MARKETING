@@ -30,8 +30,8 @@ def clarans_fast_build(data,n_clusters,num_local,max_neighbors,first_column,seco
                 s=100,color='red'
                 )
 
-    plt.xlabel("Cash Advance")
-    plt.ylabel("Cash Advance Transactions")
+    plt.xlabel(f"{first_column}")
+    plt.ylabel(f"{second_column}")
     plt.title("CLARANS Customer Segmentation")
 
     plt.subplot(1, 2, 2)
@@ -44,4 +44,20 @@ def clarans_fast_build(data,n_clusters,num_local,max_neighbors,first_column,seco
     plt.xlabel('PC1')
     plt.ylabel('PC2')
     plt.title('CLARANS Clustering with PCA')
+    plt.show()
+
+def clarans_silhouette_analysis(data, k_range, num_local, max_neighbors):
+    silhouette_scores = []
+    for k in k_range:
+        model = CLARANS(data, k, num_local, max_neighbors)
+        model.fit()
+        model.sihouette_score_=silhouette_score(data,model.get_labels())
+        silhouette_scores.append(model.sihouette_score_)
+        print(f'k={k}, Silhouette Score: {model.sihouette_score_:.4f}')
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(k_range, silhouette_scores, marker='o')
+    plt.xlabel('Number of Clusters (k)')
+    plt.ylabel('Silhouette Score')
+    plt.title('Silhouette Analysis for CLARANS')
     plt.show()

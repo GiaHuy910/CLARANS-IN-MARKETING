@@ -1,6 +1,6 @@
 #đây mới là file để lấy data
 import pandas as pd
-import numpy as np  
+import numpy as np 
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
