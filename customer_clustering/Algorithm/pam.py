@@ -1,68 +1,41 @@
 import numpy as np
 class PAM:
-    def __init__(self, n_clusters = 5, max_iter = 300):
+    def __init__(self,data,n_clusters = 5):
         self.n_clusters        = n_clusters
-        self.max_iter          = max_iter
-        self.medoids_          = []
-        self.clusters_         = []
-        self.cost_             = float('inf')
-        self.silhouette_score_ = -1.0
-        self.data              = np.array([])
-
+        self.data              = data
     def _euclid_dist(self, a, b):
-        return np.linalg.norm(a - b)
+        return np.linalg.norm(a - b,axis=2)
+    def assign_clusters(self,points, medoids):
+        distances=self._euclid_dist(points[:,np.newaxis],medoids)
+        labels=np.argmin(distances,axis=1)
+        return labels
+    def fit(self):
+        X=self.data.values
+        random_idx=np.random.choice(len(X),self.n_clusters,replace=False)
+        medoids=X[random_idx]
 
-    def _compute_total_cost(self, medoids):
-        total = 0.0
-        for point in self.data:
-            total += min(self._euclid_dist(point, self.data[m]) for m in medoids)
-        return total
+        #lần gán nhãn đầu tiên
+        labels=self.assign_clusters(X,medoids)
+        new_medoids=[]
 
-    def _assign_clusters(self, medoids):
-        clusters = [[] for _ in range(self.n_clusters)]
-        for i, point in enumerate(self.data):
-            distances  = [self._euclid_dist(point, self.data[m]) for m in medoids]
-            cluster_id = int(np.argmin(distances))
-            clusters[cluster_id].append(i)
-        return clusters
+        for i in range(self.n_clusters):
+            clusters_points=X[labels==i]
 
-    def fit(self, data):
-        self.data = np.array(data.values)
-        n         = len(self.data)
-        medoids   = list(np.random.choice(n, self.n_clusters, replace = False))
-        best_cost = self._compute_total_cost(medoids)
+            if len(clusters_points)==0:
+                new_medoids.append(medoids[i])
+                continue
+            costs=[]
 
-        for _ in range(self.max_iter):
-            improved = False
-            for i in range(self.n_clusters):
-                for candidate in range(n):
-                    if candidate in medoids:
-                        continue
-                    new_medoids    = medoids.copy()
-                    new_medoids[i] = candidate
-                    new_cost       = self._compute_total_cost(new_medoids)
-                    if new_cost < best_cost:
-                        best_cost = new_cost
-                        medoids   = new_medoids.copy()
-                        improved  = True
-            if not improved:
-                break
+            for candidate in clusters_points:
+                cost=np.sum(np.linalg.norm(clusters_points-candidate,axis=1))
+                costs.append(cost)
+            best_medoids=clusters_points[np.argmin(costs)]
+            new_medoids.append(best_medoids)
+        new_medoids=np.array(new_medoids)
 
-        self.medoids_  = medoids
-        self.clusters_ = self._assign_clusters(medoids)
-        self.cost_     = best_cost
-        return self
-
-    def get_clusters(self):
-        return self.clusters_
-
+        self.medoids_=new_medoids
+        self.labels_=labels
     def get_medoids(self):
         return self.medoids_
-
     def get_labels(self):
-        labels = [0] * len(self.data)
-        for cluster_id, cluster in enumerate(self.clusters_):
-            for index in cluster:
-                labels[index] = cluster_id
-        return labels
-
+        return self.labels_
