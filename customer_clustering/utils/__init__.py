@@ -1,2 +1,12 @@
 from .Clarans_fast_build import clarans_fast_build
+from .Clarans_fast_build import clarans_silhouette_analysis
+from .Clarans_fast_build import clarans_davies_bouldin_analysis
+from .Clarans_fast_build import clarans_Inertia_analysis
+
 from .Kmeans_fast_build import Kmeans_silhouette_analysis
+from .Kmeans_fast_build import Kmeans_davies_bouldin_analysis
+from .Kmeans_fast_build import Kmeans_Inertia_analysis
+
+from .Pam_fast_build import PAM_silhouette_analysis
+from .Pam_fast_build import PAM_davies_bouldin_analysis
+from .Pam_fast_build import PAM_Inertia_analysis

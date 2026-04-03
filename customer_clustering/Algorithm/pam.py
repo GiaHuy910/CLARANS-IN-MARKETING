@@ -35,7 +35,10 @@ class PAM:
 
         self.medoids_=new_medoids
         self.labels_=labels
+        self.Inertia=np.sum(np.linalg.norm(X - self.medoids_[self.labels_], axis=1))
     def get_medoids(self):
         return self.medoids_
     def get_labels(self):
         return self.labels_
+    def get_Inertia(self):
+        return self.Inertia

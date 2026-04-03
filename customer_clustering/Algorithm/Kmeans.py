@@ -22,7 +22,10 @@ class KMEANS:
             self.centroids=new_centroids
         self.centroids=centroids
         self.labels=labels
+        self.Inertia=np.sum((X-centroids[labels])**2)
     def get_centroids(self):
         return self.centroids
     def get_labels(self):
         return self.labels
+    def get_Inertia(self):
+        return self.Inertia
