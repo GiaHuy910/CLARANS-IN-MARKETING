@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-path=r'../customer_clustering/datasets/Customer_Data.csv'
+path=r'../customer_clustering/datasets/Customer_Data_2k.csv'
 data=pd.read_csv(path)
 
 #tiền xử lí dữ liệu
