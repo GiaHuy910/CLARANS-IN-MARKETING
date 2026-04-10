@@ -1,4 +1,5 @@
 import numpy as np
+np.random.seed(3667)
 class KMEANS:
     def __init__(self,data,n_clusters,max_iters=300):
         self.data = data
@@ -22,7 +23,7 @@ class KMEANS:
             self.centroids=new_centroids
         self.centroids=centroids
         self.labels=labels
-        self.Inertia=np.sum((X-centroids[labels])**2)
+        self.Inertia=np.sum(np.linalg.norm(X-centroids[labels],axis=1)**2)
     def get_centroids(self):
         return self.centroids
     def get_labels(self):

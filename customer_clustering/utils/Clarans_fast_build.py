@@ -1,6 +1,7 @@
 from Algorithm import CLARANS
 from sklearn.metrics import silhouette_score
 from matplotlib import pyplot as plt
+import seaborn as sns
 from sklearn.metrics import davies_bouldin_score
 def clarans_fast_build(data,n_clusters,num_local,max_neighbors,first_column,second_column,data_pca):
 
@@ -16,9 +17,7 @@ def clarans_fast_build(data,n_clusters,num_local,max_neighbors,first_column,seco
 
     plt.figure(figsize=(12, 6))
     plt.subplot(1, 2, 1)
-    plt.scatter(data[first_column],
-            data[second_column],
-            c=data['cluster'])
+    sns.scatterplot(x=data[first_column],y=data[second_column],hue=data['cluster'],palette="Set2")
 
     plt.scatter(medoids[:,0],
                 medoids[:,1],
@@ -31,7 +30,7 @@ def clarans_fast_build(data,n_clusters,num_local,max_neighbors,first_column,seco
     plt.title("CLARANS Customer Segmentation")
 
     plt.subplot(1, 2, 2)
-    plt.scatter(data_pca[:,0], data_pca[:,1], c=labels)
+    plt.scatter(data_pca[:,0], data_pca[:,1], c=data['cluster'])
     plt.scatter(medoids[:,0],
                 medoids[:,1],
                 marker='s',
@@ -58,6 +57,7 @@ def clarans_silhouette_analysis(data, k_range, num_local, max_neighbors,print_sc
     plt.ylabel('Silhouette Score')
     plt.title('Silhouette Analysis for CLARANS')
     plt.show()
+
 def clarans_davies_bouldin_analysis(data, k_range, num_local, max_neighbors,print_scores=False):
     db_scores = []
     for k in k_range:
@@ -74,6 +74,7 @@ def clarans_davies_bouldin_analysis(data, k_range, num_local, max_neighbors,prin
     plt.ylabel('Davies-Bouldin Score')
     plt.title('Davies-Bouldin Analysis for CLARANS')
     plt.show()
+    
 def clarans_Inertia_analysis(data, k_range, num_local, max_neighbors,print_scores=False):
     inertia_scores = []
     for k in k_range:

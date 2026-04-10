@@ -1,4 +1,5 @@
 import numpy as np
+np.random.seed(3667)
 class PAM:
     def __init__(self,data,n_clusters = 5):
         self.n_clusters        = n_clusters
