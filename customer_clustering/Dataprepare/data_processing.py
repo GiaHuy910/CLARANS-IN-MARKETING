@@ -42,14 +42,21 @@ data=data.rename(columns={"MntWines": "Wines"
                         ,"MntSweetProducts":"Sweets"
                         ,"MntGoldProds":"Gold"})
 
+data['Food']=data['Meat']+data['Fish']+data['Sweets']+data['Fruits']
+data['Wines_ratio']=(data['Wines']/data['Total_Spend']).round(3)
+data['Food_ratio']=(data['Food']/data['Total_Spend']).round(3)
+data['Gold_ratio']=(data['Gold']/data['Total_Spend']).round(3)
+
 features_to_use=['Age','Income','Education'
                 ,'Family_Size','Total_Spend'
-                ,'Wines','Fruits','Meat'
-                ,'Fish','Sweets','Gold'
+                ,'Wines','Food','Gold'
+                ,'Wines_ratio','Food_ratio','Gold_ratio'
+                ,'NumWebPurchases'
                 ,'NumDealsPurchases','NumCatalogPurchases'
                 ,'NumStorePurchases','NumWebVisitsMonth']
 data_to_use=data[features_to_use].copy()
 
+#Số hoá kdl categorical
 s = (data_to_use.dtypes == 'object')
 object_cols = list(s[s].index)
 LE=LabelEncoder()
@@ -61,7 +68,7 @@ data_to_use = data_to_use[(data_to_use["Age"]<=90)]
 data_to_use = data_to_use[(data_to_use["Income"]<150000)]
 
 #Log
-log_cols = ['Wines','Fruits','Meat','Fish','Sweets','Gold','Total_Spend']
+log_cols = ['Wines','Food','Gold','Total_Spend']
 for col in log_cols:
     high=data[col].quantile(0.99)
     data_to_use[col]=data_to_use[col].clip(upper=high)

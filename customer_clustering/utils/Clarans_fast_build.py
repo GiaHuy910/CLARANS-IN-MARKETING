@@ -1,9 +1,12 @@
+import seaborn as sns
+import pandas as pd
+
 from Algorithm import CLARANS
 from sklearn.metrics import silhouette_score
+from sklearn.decomposition import PCA
 from matplotlib import pyplot as plt
-import seaborn as sns
 from sklearn.metrics import davies_bouldin_score
-def clarans_fast_build(data,n_clusters,num_local,max_neighbors,first_column,second_column,data_pca):
+def clarans_fast_build(data,n_clusters,num_local,max_neighbors,first_column,second_column):
 
     model=CLARANS(data,n_clusters,num_local,max_neighbors)
     model.fit()
@@ -15,30 +18,21 @@ def clarans_fast_build(data,n_clusters,num_local,max_neighbors,first_column,seco
     model.sihouette_score_= silhouette_score(data.drop(columns=['cluster']), labels)
     print(f'Silhouette Score: {model.sihouette_score_:.4f}')
 
-    plt.figure(figsize=(12, 6))
-    plt.subplot(1, 2, 1)
-    sns.scatterplot(x=data[first_column],y=data[second_column],hue=data['cluster'],palette="Set2")
+    plt.figure(figsize=(8, 6))
+    sns.scatterplot(x=data[first_column],
+            y=data[second_column],
+            hue=data['cluster'], palette="Set2")
 
-    plt.scatter(medoids[:,0],
-                medoids[:,1],
-                marker='s',
-                s=100,color='red'
-                )
-
-    plt.xlabel(f"{first_column}")
-    plt.ylabel(f"{second_column}")
+    for i, medoid in enumerate(medoids):
+        plt.text(medoid[0], medoid[1], f'Medoid {i}', fontsize=9)
+    plt.scatter(medoids[:, 0],
+        medoids[:, 1],
+        marker='s',
+        s=100,color='red')
+    plt.xlabel(first_column)
+    plt.ylabel(second_column)
     plt.title("CLARANS Customer Segmentation")
 
-    plt.subplot(1, 2, 2)
-    plt.scatter(data_pca[:,0], data_pca[:,1], c=data['cluster'])
-    plt.scatter(medoids[:,0],
-                medoids[:,1],
-                marker='s',
-                s=100,color='red'
-                )
-    plt.xlabel('PC1')
-    plt.ylabel('PC2')
-    plt.title('CLARANS Clustering with PCA')
     plt.show()
 
 def clarans_silhouette_analysis(data, k_range, num_local, max_neighbors,print_scores=False):
