@@ -68,9 +68,9 @@ data_to_use = data_to_use[(data_to_use["Age"]<=90)]
 data_to_use = data_to_use[(data_to_use["Income"]<150000)]
 
 #Log
-log_cols = ['Wines','Food','Gold','Total_Spend']
+log_cols = ['Wines','Food','Gold','Total_Spend','Gold_ratio','Food_ratio','Wines_ratio']
 for col in log_cols:
-    high=data[col].quantile(0.99)
+    high=data[col].quantile(0.998)
     data_to_use[col]=data_to_use[col].clip(upper=high)
 
 for col in log_cols:

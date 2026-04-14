@@ -10,3 +10,5 @@ from .Kmeans_fast_build import Kmeans_Inertia_analysis
 from .Pam_fast_build import PAM_silhouette_analysis
 from .Pam_fast_build import PAM_davies_bouldin_analysis
 from .Pam_fast_build import PAM_Inertia_analysis
+
+from .plot import draw_correlation_matrix
