@@ -43,9 +43,9 @@ data=data.rename(columns={"MntWines": "Wines"
                         ,"MntGoldProds":"Gold"})
 
 data['Food']=data['Meat']+data['Fish']+data['Sweets']+data['Fruits']
-data['Wines_ratio']=(data['Wines']/data['Total_Spend']).round(3)
-data['Food_ratio']=(data['Food']/data['Total_Spend']).round(3)
-data['Gold_ratio']=(data['Gold']/data['Total_Spend']).round(3)
+data['Wines_ratio']=(data['Wines']/(data['Total_Spend'])+1e-6).round(3)
+data['Food_ratio']=(data['Food']/(data['Total_Spend'])+1e-6).round(3)
+data['Gold_ratio']=(data['Gold']/(data['Total_Spend'])+1e-6).round(3)
 
 features_to_use=['Age','Income','Education'
                 ,'Family_Size','Total_Spend'
@@ -56,16 +56,31 @@ features_to_use=['Age','Income','Education'
                 ,'NumStorePurchases','NumWebVisitsMonth']
 data_to_use=data[features_to_use].copy()
 
+features_to_keep=['Age','Income','Education'
+                ,'Family_Size','Total_Spend'
+                ,'Wines','Food','Gold'
+                ,'Wines_ratio','Food_ratio','Gold_ratio'
+                ,'NumWebPurchases'
+                ,'NumDealsPurchases','NumCatalogPurchases'
+                ,'NumStorePurchases','NumWebVisitsMonth','AcceptedCmp1','AcceptedCmp2'
+                ,'AcceptedCmp3','AcceptedCmp4','AcceptedCmp5']
+d=data[features_to_keep].copy()
+
 #Số hoá kdl categorical
 s = (data_to_use.dtypes == 'object')
 object_cols = list(s[s].index)
 LE=LabelEncoder()
 for i in object_cols:
     data_to_use[i]=data_to_use[[i]].apply(LE.fit_transform)
+    d[i]=d[[i]].apply(LE.fit_transform)
 
 #Cap
 data_to_use = data_to_use[(data_to_use["Age"]<=90)]
 data_to_use = data_to_use[(data_to_use["Income"]<150000)]
+
+d = d[(d["Age"]<=90)]
+d = d[(d["Income"]<150000)]
+data_before_scaling=pd.DataFrame(d,columns=features_to_keep)
 
 #Log
 log_cols = ['Wines','Food','Gold','Total_Spend','Gold_ratio','Food_ratio','Wines_ratio']
