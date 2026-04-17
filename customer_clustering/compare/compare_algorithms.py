@@ -10,11 +10,18 @@ from datetime import datetime
 from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_harabasz_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import LabelEncoder
 from collections import Counter
 import sys
 import os
 
-FEATURES = ['Income', 'Age', 'Total_Spend']
+FEATURES = ['Age','Income','Education'
+                ,'Family_Size','Total_Spend'
+                ,'Wines','Food','Gold'
+                ,'Wines_ratio','Food_ratio','Gold_ratio'
+                ,'NumWebPurchases'
+                ,'NumDealsPurchases','NumCatalogPurchases'
+                ,'NumStorePurchases','NumWebVisitsMonth']
 
 # Construct paths
 DATASET_PATH = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')), 'datasets', 'marketing_campaign.csv')
@@ -56,6 +63,23 @@ def load_data():
     data['Total_Spend'] = (data['MntWines'] + data['MntFruits'] + data['MntMeatProducts'] + 
                           data['MntFishProducts'] + data['MntSweetProducts'] + data['MntGoldProds'])
     
+    data=data.rename(columns={"MntWines": "Wines"
+                        ,"MntFruits":"Fruits"
+                        ,"MntMeatProducts":"Meat"
+                        ,"MntFishProducts":"Fish"
+                        ,"MntSweetProducts":"Sweets"
+                        ,"MntGoldProds":"Gold"})
+    data['Food']=data['Meat']+data['Fish']+data['Sweets']+data['Fruits']
+    data['Wines_ratio']=(data['Wines']/(data['Total_Spend'])+1e-6).round(3)
+    data['Food_ratio']=(data['Food']/(data['Total_Spend'])+1e-6).round(3)
+    data['Gold_ratio']=(data['Gold']/(data['Total_Spend'])+1e-6).round(3)
+
+    s = (data.dtypes == 'object')
+    object_cols = list(s[s].index)
+    LE=LabelEncoder()
+    for i in object_cols:
+        data[i]=data[[i]].apply(LE.fit_transform)
+
     # Select features for clustering
     selected_data = data[FEATURES].copy()
     print(f"✓ Data loaded: {selected_data.shape[0]} samples, {selected_data.shape[1]} features")
