@@ -4,27 +4,27 @@
 
 ---
 
-## 🚀 Tính năng chính
+## Tính năng chính
 
-- 🔐 **Phân cụm dữ liệu bằng nhiều thuật toán**
+- **Phân cụm dữ liệu bằng nhiều thuật toán**
   - CLARANS.
   - K-Means.
   - Pam.
   - DBSCAN.
 
-- 🎵 **So sánh hiệu quả phân cụm**
-  - Sihouette score.
+- **So sánh hiệu quả phân cụm**
+  - Silhouette score.
   - Davies Bouldin score.
   - Inertia.
 
-- 📚 **Trực quan hoá**
+- **Trực quan hoá**
   - Hiển thị kết quả bằng biểu đồ và so sánh ra trang web local.
 
 ---
 
-## 🧠 Kiến trúc & Công nghệ
+## Kiến trúc & Công nghệ
 
-### 📌 Tech Stack
+### Tech Stack
 
 | Category         | Technology                    |
 | ---------------- | ----------------------------- |
@@ -38,7 +38,7 @@
 
 ---
 
-## 🛠️ Cài đặt & Chạy project
+## Cài đặt & Chạy project
 
 ### 1) Clone repo
 
@@ -59,23 +59,23 @@ pip install -r requirements.txt
 
 - Chạy web :
 
-  # 1. Train models (saves actual runtimes)
+  ## 1. Train models (saves actual runtimes)
 
   python retrain_models.py
 
-  # 2. Compare algorithms (loads runtimes, normalizes data, computes metrics)
+  ## 2. Compare algorithms (loads runtimes, normalizes data, computes metrics)
 
   python compare_algorithms.py
 
-  # 3. Generate academic report
+  ## 3. Generate academic report
 
   python generate_report.py
 
-  # 4. Open Output/clustering_comparison_report.html in browser
+  ## 4. Open Output/clustering_comparison_report.html in browser
 
 ---
 
-## 📁 Cấu trúc dự án
+## Cấu trúc dự án
 
 ```
 Customers_clustering_with_CLARANS/
@@ -105,7 +105,7 @@ Customers_clustering_with_CLARANS/
 
 ---
 
-## 📦 Data Flow
+## Data Flow
 
 - Load dữ liệu khách hàng
 - Tiền xử lý (missing values, scaling)
@@ -116,7 +116,7 @@ Customers_clustering_with_CLARANS/
 
 ---
 
-## 💬 Tác giả
+## Tác giả
 
 Dự án được thực hiện bởi các thành viên nhóm:
 
